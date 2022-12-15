@@ -11,8 +11,12 @@
 </head>
 <body>
 <?php
+
 include($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
+
+
+
 ?>
 
 
@@ -23,11 +27,26 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
         <div class="row">
             <?php
             $sql = "SELECT id,name,image,price FROM tbl_products;";
+            if ($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST["delete"]))
+            {
+                $del_id = $_POST["delete"];
+                include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
+                    $sql2 = "DELETE FROM tbl_products WHERE id = '$del_id'";
+                    $dbh->query($sql2);
+//                echo $_POST["delete"];
+            }
             foreach ($dbh->query($sql) as $row) {
                 $id = $row['id'];
                 $name = $row['name'];
                 $image = $row['image'];
                 $price = $row['price'];
+//                if ($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['delete'])) {
+//                    include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
+//                    $sql2 = "DELETE FROM tbl_products WHERE id = '$id'";
+//                    $dbh->query($sql2);
+//
+//                }
+
                 echo '
             <div class="col-md-6 col-lg-4 mb-4 mb-md-0">
                 <div class="card">
@@ -41,7 +60,10 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
                         </div>
 
                         <div class="mb-2 text-end">
-                            <button type="button" class="btn btn-success">Купить</button>
+                        <form method="post">
+                            <button type="button" class="btn btn-success">Купити</button>
+                            <button type="submit" class="btn btn-danger" name="delete" value=' . $id . '>Видалити</button>
+                        </form>
                         </div>
                     </div>
                 </div>
