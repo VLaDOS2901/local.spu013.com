@@ -5,31 +5,30 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     $name = $_POST['name'];
     $price = $_POST['price'];
     $description = $_POST['description'];
-    $image = $_FILES['image']['tmp_name'];
-    print_r([$name, $price, $description, $image]);
-    $dir_save='images/'; //папка де будуть зберігатися фотки
-    $image_name =uniqid().'.jpg';
-    $uploadfile = $dir_save.$image_name;
-    if(move_uploaded_file($image, $uploadfile))
+    $image = "";
+    $dir_save='images/';
+    $image_names = "";
+    for ($i=0; $i<count($_FILES["image"]["name"]); $i++)
     {
-        echo"Файл успішно збережно";
+        $image .= " ";
+        $image .= $_FILES['image']['tmp_name'][$i];
+        $image_name =uniqid().'.jpg';
+        $image_names .= $image_name;
+        $image_names .= " ";
+        $uploadfile = $dir_save.$image_name;
+        move_uploaded_file($_FILES['image']['tmp_name'][$i], $uploadfile);
+    }
+
         include_once($_SERVER['DOCUMENT_ROOT'].'/options/connection_database.php');
         $sql = 'INSERT INTO tbl_products (name, image, price, datecrate, description) VALUES (:name, :image, :price, NOW(), :description);';
         $stmt=$dbh->prepare($sql);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':description', $description);
-        $stmt->bindParam(':image', $image_name);
+        $stmt->bindParam(':image', $image_names);
         $stmt->execute();
         header("Location: /");
         exit();
-    }
-    else
-    {
-        echo"Помилка збережння файлу";
-        exit();
-    }
-
 }
 ?>
 <!doctype html>
@@ -58,7 +57,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     </div>
     <div class="mb-3">
         <label for="image" class="form-label">Фото</label>
-        <input type="file" class="form-control" id="image" name="image">
+        <input type="file" class="form-control" id="image" name="image[]" multiple>
     </div>
     <div class="mb-3">
         <label for="description" class="form-label">Опис</label>
