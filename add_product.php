@@ -1,23 +1,26 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+    //Проголошення змінних
     $name = $_POST['name'];
     $price = $_POST['price'];
     $description = $_POST['description'];
 
-
     include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
     $sql = 'INSERT INTO tbl_products (name, price, datecrate, description) VALUES (:name, :price, NOW(), :description);';
+    //prepare - Готує запит до виконання і повертає пов'язаний з запитом об'єкт
     $stmt = $dbh->prepare($sql);
+    //Ініціалізує змінні масиву
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':price', $price);
     $stmt->bindParam(':description', $description);
+    //Запускає SQL команду
     $stmt->execute();
 
     $sql = "SELECT LAST_INSERT_ID() as id;";
+    //query - виконує запит на базу данних
     $item = $dbh->query($sql)->fetch();
     $insert_id = $item['id'];
-
+    //вставляємо вибрані зображення в таблицю tbl_product_images
     $images = $_POST['images'];
     $count = 1;
     foreach ($images as $base64) {
@@ -35,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
         $count++;
     }
-
+    //Переадресація на головну сторінку
     header("Location: /");
     exit();
 
@@ -55,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <?php
+//Підключення верхнього меню
 include($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 ?>
 <h1 class="text-center">Додати продукт</h1>
@@ -108,14 +112,12 @@ include($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
         image.onchange = function (e) {
             const files = e.target.files;
 
-            // console.log("Select files", files);
             for (let i = 0; i < files.length; i++) {
                 // Оголосили reader
                 const reader = new FileReader();
                 //Підключили подію
                 reader.addEventListener('load', function () {
                     const base64 = reader.result;
-                    // console.log(base64);
                     const id = uuidv4();
                     const data = `
                         <div class="row">
@@ -156,8 +158,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
             $(this).closest(".item-image").remove();
         });
 
-        //Змінити зображення зі списку
-
+        //Змінити зображення в списку
         let edit_id = 0;
         const reader = new FileReader();
         reader.addEventListener("load", () => {

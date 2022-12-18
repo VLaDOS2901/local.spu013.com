@@ -1,5 +1,6 @@
 
 <?php
+//Підключення до бази данних
 include_once($_SERVER['DOCUMENT_ROOT'].'/options/config.php');
 
 try {

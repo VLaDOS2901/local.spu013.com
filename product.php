@@ -12,12 +12,14 @@
 </head>
 <body>
 <?php
+//Підключення верхнього меню
 include($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
 $id = $_GET['id'];
 $name = '';
 $price = '';
 $description = '';
+//Знаходить данні про продукт
 $sql = '
         SELECT id,name,price,description
         FROM tbl_products 
@@ -30,6 +32,7 @@ if ($row = $stm->fetch()) {
     $price = $row['price'];
     $description = $row['description'];
 }
+//Знаходить картинки, які звязані з цим продуктом
 $sql = '
         SELECT pi.name
         FROM tbl_product_images pi 
@@ -51,9 +54,11 @@ $images = $stm->fetchAll();
                     <div class="col-md-6">
                         <div class="images p-3">
                             <div class="text-center p-4">
+                                <!--Показує перше зображення з масиву-->
                                 <img id="main-image" src="/images/<?php echo $images[0]['name']; ?>" width="250"/>
                             </div>
                             <div class="thumbnail text-center">
+                                <!--Показує список всіх зображень-->
                                 <?php
                                 foreach ($images as $img)
                                     echo '
@@ -92,6 +97,7 @@ $images = $stm->fetchAll();
 
 <script src="js/bootstrap.bundle.min.js"></script>
 <script>
+    //Функція, яка змінює головну виведену картинку
     function change_image(image) {
         var container = document.getElementById("main-image");
         container.src = image.src;

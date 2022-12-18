@@ -11,7 +11,7 @@
 </head>
 <body>
 <?php
-
+//Підключення верхнього меню
 include($_SERVER['DOCUMENT_ROOT'] . '/_header.php');
 include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
 ?>
@@ -23,12 +23,13 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
     <div class="container py-5">
         <div class="row">
             <?php
+            //Повернути всі елементи з таблиці tbl_products
             $sql = "
                 Select p.id, p.name, p.price, pi.name as image 
                 from tbl_products as p, tbl_product_images as pi 
                 WHERE p.id=pi.product_id and pi.priority=1;
                 ";
-
+            //Видалення продукту
             if ($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST["delete"])) {
                 $del_id = $_POST["delete"];
                 include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
@@ -37,7 +38,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
                 $dbh->query($sql1);
                 $dbh->query($sql2);
             }
-
+            //Виведення кожного продукту на головну сторінку
             foreach ($dbh->query($sql) as $row)
             {
                 $id=$row['id'];

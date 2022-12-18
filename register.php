@@ -1,5 +1,6 @@
 <?php
 $error = "";
+//Створення нового користувача
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $name = $_POST['name'];
@@ -49,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<!--Підключення верхнього меню-->
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/_header.php'); ?>
 
 

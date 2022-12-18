@@ -1,5 +1,7 @@
 <?php
 $error = "";
+
+//Перевірка чи пароль та логін вірні
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone_number = $_POST['phone_number'];
     $password = $_POST['password'];
@@ -7,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
     $sql = "SELECT * FROM tbl_users WHERE phone_number = '$phone_number' and password = '$password'";
     foreach ($dbh->query($sql) as $row) {
+        //Переадресація на сторінку welcome.php в разі успіху
         header("location: welcome.php");
     }
     $error = "Ваш номер телефону чи логін невірні";
@@ -25,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<!--Підключення верхнього меню-->
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/_header.php'); ?>
 
 <form class="col-md-6 offset-md-3 mt-5" enctype="multipart/form-data" method="post">
