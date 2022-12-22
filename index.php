@@ -49,7 +49,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
             <div class="col-md-6 col-lg-4 mb-4 mb-md-0 mt-3">
                 <div class="card">
                     <img src="images/' . $image . '"
-                         class="card-img-top" alt="Gaming Laptop"/>
+                         class="card-img-top" alt="Pizza"/>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <h5 class="mb-0">' . $name . '</h5>
@@ -58,6 +58,7 @@ include_once($_SERVER['DOCUMENT_ROOT'] . '/options/connection_database.php');
                         <div class="mb-2 text-end">
                         <form method="post">
                             <a href="product.php?id=' . $id . '" class="btn btn-success">Купити</a>
+                            <a href="edit_product.php?id=' . $id . '" class="btn btn-warning">Редагувати</a>
                             <button type="submit" class="btn btn-danger" name="delete" value=' . $id . '>Видалити</button>
                         </form>
                         </div>
